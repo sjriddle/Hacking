@@ -47,7 +47,8 @@ int main(int argc, char *argv[]) {
     if (close(fd) == -1)
         fatal("in main() while closing file");
 
-    printf("Note has been saved.\n");
+    printf("Note has been saved. \n");
+    
     free(buffer);
     free(datafile);
 }
