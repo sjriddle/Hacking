@@ -5,7 +5,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
 #include "hacking.h"
 #include "hacking-network.h"
 
