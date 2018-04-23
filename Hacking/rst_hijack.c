@@ -46,12 +46,10 @@ int main(int argc, char *argv[]) {
       libnet_error(LIBNET_ERR_FATAL, "can't initialize packet memory.\n");
 
    libnet_seed_prand();
-
    set_packet_filter(pcap_handle, (struct in_addr *)&target_ip);
 
    printf("Resetting all TCP connections to %s on %s\n", argv[1], device);
    pcap_loop(pcap_handle, -1, caught_packet, (u_char *)&critical_libnet_data);
-
    pcap_close(pcap_handle);
 }
 
@@ -78,7 +76,6 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
    int bcount;
 
    passed = (struct data_pass *) user_args; // pass data using a pointer to a struct
-
    IPhdr = (struct libnet_ip_hdr *) (packet + LIBNET_ETH_H);
    TCPhdr = (struct libnet_tcp_hdr *) (packet + LIBNET_ETH_H + LIBNET_TCP_H);
 
