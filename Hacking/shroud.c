@@ -1,7 +1,6 @@
 #include <libnet.h>
 #include <pcap.h>
 #include "hacking.h"
-
 #define MAX_EXISTING_PORTS 30
 
 void caught_packet(u_char *, const struct pcap_pkthdr *, const u_char *);
@@ -57,7 +56,6 @@ int main(int argc, char *argv[]) {
         libnet_error(LIBNET_ERR_FATAL, "can't initialize packet memory.\n");
 
     libnet_seed_prand();
-
     set_packet_filter(pcap_handle, (struct in_addr *)&target_ip, existing_ports);
 
     pcap_loop(pcap_handle, -1, caught_packet, (u_char *)&critical_libnet_data);
@@ -87,9 +85,10 @@ int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip, u_short *port
         }
     }
     printf("DEBUG: filter string is \'%s\' \n", filter_string);
+    
     if (pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1)
         fatal("pcap_compile failed");
-
+    
     if (pcap_setfilter(pcap_hdl, &filter) == -1)
         fatal("pcap_setfilter failed");
 }
