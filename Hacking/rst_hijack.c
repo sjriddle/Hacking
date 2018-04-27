@@ -25,7 +25,6 @@ int main(int argc, char *argv[]) {
       exit(0);
    }
    target_ip = libnet_name_resolve(argv[1], LIBNET_RESOLVE);
-
    if (target_ip == -1)
       fatal("Invalid target address");
 
@@ -57,7 +56,6 @@ int main(int argc, char *argv[]) {
 int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip) {
    struct bpf_program filter;
    char filter_string[100];
-
    sprintf(filter_string, "tcp[tcpflags] & tcp-ack != 0 and dst host %s", inet_ntoa(*target_ip));
 
    printf("DEBUG: filter string is \'%s\'\n", filter_string);
