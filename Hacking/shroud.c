@@ -133,6 +133,7 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
 
    bcount = libnet_write_ip(passed->libnet_handle, passed->packet, LIBNET_IP_H+LIBNET_TCP_H);
    if (bcount < LIBNET_IP_H + LIBNET_TCP_H)
-      libnet_error(LIBNET_ERR_WARNING, "Warning: Incomplete packet written.");
+      libnet_error(LIBNET_ERR_WARNING, "Warning: Incomplete packet written
+                   
    printf("bing!\n");
 }
