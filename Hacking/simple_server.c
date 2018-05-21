@@ -7,10 +7,12 @@
 #include <arpa/inet.h>
 #include "hacking.h"
 
-#define PORT 7890	// the port users will be connecting to
+// The port users will be connecting to
+#define PORT 7890
 
 int main(void) {
-	int sockfd, new_sockfd;  // listen on sock_fd, new connection on new_fd
+	// Listen on sock_fd, new connection on new_fd
+	int sockfd, new_sockfd;  
 	struct sockaddr_in host_addr, client_addr;
 	socklen_t sin_size;
 	int recv_length=1, yes=1;
@@ -22,10 +24,10 @@ int main(void) {
 	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
 		fatal("setting socket option SO_REUSEADDR");
 
-	host_addr.sin_family = AF_INET;		 // host byte order
-	host_addr.sin_port = htons(PORT);	 // short, network byte order
-	host_addr.sin_addr.s_addr = INADDR_ANY;  // automatically fill with my IP
-	memset(&(host_addr.sin_zero), '\0', 8);  // zero the rest of the struct
+	host_addr.sin_family = AF_INET;		 // Host byte order
+	host_addr.sin_port = htons(PORT);	 // Short, network byte order
+	host_addr.sin_addr.s_addr = INADDR_ANY;  // Automatically fill with my IP
+	memset(&(host_addr.sin_zero), '\0', 8);  // Zero the rest of the struct
 
 	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1)
 		fatal("binding to socket");
