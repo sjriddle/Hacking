@@ -17,7 +17,6 @@ int main() {
     device = pcap_lookupdev(errbuf);
     if (device == NULL)
         pcap_fatal("pcap_lookupdev", errbuf);
-
     printf("Sniffing on device %s\n", device);
 
     pcap_handle = pcap_open_live(device, 4096, 1, 0, errbuf);
