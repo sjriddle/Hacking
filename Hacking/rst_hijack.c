@@ -94,16 +94,16 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
       0,                              // payload length
       passed->packet);                // packet header memory
 
-   libnet_build_tcp(htons(TCPhdr->th_dport),// source TCP port (pretend we are dst)
-      htons(TCPhdr->th_sport),              // destination TCP port (send back to src)
-      htonl(TCPhdr->th_ack),                // sequence number (use previous ack)
-      libnet_get_prand(LIBNET_PRu32),       // acknowledgement number (randomized)
-      TH_RST,                               // control flags (RST flag set only)
-      libnet_get_prand(LIBNET_PRu16),       // window size (randomized)
-      0,                                    // urgent pointer
-      NULL,                                 // payload (none)
-      0,                                    // payload length
-      (passed->packet) + LIBNET_IP_H);      // packet header memory
+   libnet_build_tcp(htons(TCPhdr->th_dport), // source TCP port (pretend we are dst)
+      htons(TCPhdr->th_sport),               // destination TCP port (send back to src)
+      htonl(TCPhdr->th_ack),                 // sequence number (use previous ack)
+      libnet_get_prand(LIBNET_PRu32),        // acknowledgement number (randomized)
+      TH_RST,                                // control flags (RST flag set only)
+      libnet_get_prand(LIBNET_PRu16),        // window size (randomized)
+      0,                                     // urgent pointer
+      NULL,                                  // payload (none)
+      0,                                     // payload length
+      (passed->packet) + LIBNET_IP_H);       // packet header memory
 
    if (libnet_do_checksum(passed->packet, IPPROTO_TCP, LIBNET_TCP_H) == -1)
       libnet_error(LIBNET_ERR_FATAL, "can't compute checksum\n");
