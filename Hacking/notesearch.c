@@ -55,6 +55,7 @@ int find_user_note(int fd, int user_uid) {
     while(note_uid != user_uid) {
         if (read(fd, &note_uid, 4) != 4)
             return -1;
+        
         if(read(fd, &byte, 1) != 1)
             return -1;
 
@@ -66,7 +67,6 @@ int find_user_note(int fd, int user_uid) {
         }
     }
     lseek(fd, length * -1, SEEK_CUR);
-
     printf("[DEBUG] found a %d byte note for user id %d\n", length, note_uid);
     return length;
 }
