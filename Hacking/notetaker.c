@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
 
     if (argc < 2)
         usage(argv[0], datafile);
-
     strcpy(buffer, argv[1]);
 
     printf("[DEBUG] buffer    @ %p: \'%s\'\n", buffer, buffer);
@@ -46,7 +45,6 @@ int main(int argc, char *argv[]) {
 
     if (close(fd) == -1)
         fatal("in main() while closing file");
-
     printf("Note has been saved. \n");
     
     free(buffer);
