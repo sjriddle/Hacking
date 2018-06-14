@@ -8,12 +8,13 @@
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
+
 #include "hacking.h"
 #include "hacking-network.h"
 
-#define PORT 80 // Port connecting to
-#define WEBROOT "./webroot" // Root directory of webserver
-#define LOGFILE "/var/log/tinywebd.log" // log filename
+#define PORT 80
+#define WEBROOT "./webroot"
+#define LOGFILE "/var/log/tinywebd.log"
 
 int logfd, sockfd;
 void handle_connection(int, struct sockaddr_in *, int);
@@ -78,7 +79,8 @@ int main(void) {
     return 0;
 }
 
-/* Function handles connection on socket from client address and logs it.
+/** 
+ * Function handles connection on socket from client address and logs it.
  * It is processed as a web request and this function replies over the
  * connected socket. The passed socket is then closed at the functions end.
  */
@@ -112,7 +114,6 @@ ntohs(client_addr_ptr->sin_port), request);
             strcpy(resource, WEBROOT);
             strcat(resource, ptr);
             fd = open(resource, O_RDONLY, 0)
-
             if (fd == -1) {
                 strcat(log_buffer, " 404 Not Found\n");
                 send_string(sockfd, "HTTP/1.0 404 NOT FOUND\r\n");
@@ -141,11 +142,11 @@ ntohs(client_addr_ptr->sin_port), request);
     timestamp(logfd);
     length = strlen(log_buffer);
     write(logfd, log_buffer, length);
-
     shutdown(sockfd, SHUT_RDWR);
 }
 
-/* Function accepts file descriptor and returns
+/** 
+ * Function accepts file descriptor and returns
  * the size of the associated file. REturns -1 on failure.
  */
 int get_file_size(int fd) {
@@ -156,7 +157,8 @@ int get_file_size(int fd) {
     return (int) stat_struct.st_size;
 }
 
-/* Function writes a timestamp string to open file descriptor
+/**
+ * Function writes a timestamp string to open file descriptor
  * that it is passed to.
  */
 void timestamp(fd) {
@@ -164,7 +166,6 @@ void timestamp(fd) {
     struct tm *time_struct;
     int length;
     char time_buffer[40];
-
     time(&now);
     time_struct = localtime((const time_t *)&now);
     length = strftime(time_buffer, 40, "%m/%d/%Y %H:%M:%S> ", time_struct);
