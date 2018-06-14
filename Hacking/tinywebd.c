@@ -8,7 +8,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
-
 #include "hacking.h"
 #include "hacking-network.h"
 
