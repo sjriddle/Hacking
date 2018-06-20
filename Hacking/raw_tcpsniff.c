@@ -11,8 +11,9 @@ int main(void) {
     int i, recv_length, sockfd;
     u_char buffer[9000];
 
-    if ((sockfd = socket(PF_INIT, SOCK_RAW, IPPROTO_TCP)) == -1)
+    if ((sockfd = socket(PF_INIT, SOCK_RAW, IPPROTO_TCP)) == -1) {
         fatal("in socket");
+    }
 
     for(i=0; i < 3; i++) {
         recv_length = recv(sockfd, buffer, 8000, 0);
