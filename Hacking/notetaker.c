@@ -21,30 +21,33 @@ int main(int argc, char *argv[]) {
     datafile = (char *) ec_malloc(20);
     strcpy(datafile, "/var/notes");
 
-    if (argc < 2)
+    if (argc < 2) {
         usage(argv[0], datafile);
+    }
     strcpy(buffer, argv[1]);
-
     printf("[DEBUG] buffer    @ %p: \'%s\'\n", buffer, buffer);
     printf("[DEBUG] datafile  @ %p: \'%s\'\n", datafile, datafile);
 
     fd = open(datafile, O_WRONLY|O_CREAT|O_APPEND, S_IRUSR|S_IWUSR);
-    if (fd == -1)
+    if (fd == -1) {
         fatal("in main() while opening file");
+    }
     printf("[DEBUG] file descriptor is %d\n", fd);
-
     userid = getuid();
 
-    if (write(fd, &userid, 4) == -1)
+    if (write(fd, &userid, 4) == -1) {
         fatal("in main() while writing userid to file");
+    }
     write(fd, "\n", 1);
 
-    if (write(fd, buffer, strlen(buffer)) == -1)
+    if (write(fd, buffer, strlen(buffer)) == -1) {
         fatal("in main() while writing buffer to file");
+    }
     write(fd, "\n", 1);
 
-    if (close(fd) == -1)
+    if (close(fd) == -1) {
         fatal("in main() while closing file");
+    }
     printf("Note has been saved. \n");
     
     free(buffer);
