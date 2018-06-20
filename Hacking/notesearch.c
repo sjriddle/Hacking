@@ -67,8 +67,9 @@ int find_user_note(int fd, int user_uid) {
 
         byte = length = 0;
         while(byte != '\n') {
-            if (read(fd, &byte, 1) != 1)
+            if (read(fd, &byte, 1) != 1) {
                 return -1;
+            }
             length++;
         }
     }
@@ -80,20 +81,23 @@ int find_user_note(int fd, int user_uid) {
 int search_note(char *note, char *keyword) {
     int i, keyword_length, match = 0;
     keyword_length = strlen(keyword);
-    if (keyword_length == 0)
+    if (keyword_length == 0) {
         return 1;
+    }
 
     for(i=0; i < strlen(note); i++) {
-        if (note[i] == keyword[match])
+        if (note[i] == keyword[match]) {
             match++;
-        else {
-            if (note[i] == keyword[0])
+        } else {
+            if (note[i] == keyword[0]) {
                 match = 1;
-            else
+            } else {
                 match = 0;
+            }
         }
-        if (match == keyword_length)
+        if (match == keyword_length) {
             return 1;
+        }
     }
     return 0;
 }
