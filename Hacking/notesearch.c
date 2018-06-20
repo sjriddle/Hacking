@@ -15,18 +15,21 @@ int main(int argc, char *argv[]) {
     int userid, printing = 1, fd;
     char searchstring[100];
 
-    if (argc > 1)
+    if (argc > 1) {
         strcpy(searchstring, argv[1]);
-    else
+    } else {
         searchstring[0] = 0;
+    }
 
     userid = getuid();
     fd = open(FILENAME, O_RDONLY);
-    if (fd == -1)
+    if (fd == -1) {
         fatal("in main() while opening file for reading");
+    }
 
-    while(printing)
+    while(printing) {
         printing = print_notes(fd, userid, searchstring);
+    }
     printf("------[ end of note data ]------\n");
     close(fd);
 }
@@ -36,14 +39,15 @@ int print_notes(int fd, int uid, char *searchstring) {
     char byte = 0, note_buffer[100];
 
     note_length = find_user_note(fd, uid);
-    if (note_length == -1)
+    if (note_length == -1) {
         return 0;
+    }
 
     read(fd, note_buffer, note_length);
     note_buffer[note_length] = 0;
-
-    if (search_note(note_buffer, searchstring))
+    if (search_note(note_buffer, searchstring)) {
         printf(note_buffer);
+    }
     return 1;
 }
 
@@ -53,11 +57,13 @@ int find_user_note(int fd, int user_uid) {
     int length;
 
     while(note_uid != user_uid) {
-        if (read(fd, &note_uid, 4) != 4)
+        if (read(fd, &note_uid, 4) != 4) {
             return -1;
+        }
         
-        if(read(fd, &byte, 1) != 1)
+        if(read(fd, &byte, 1) != 1) {
             return -1;
+        }
 
         byte = length = 0;
         while(byte != '\n') {
