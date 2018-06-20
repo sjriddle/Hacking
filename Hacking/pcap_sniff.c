@@ -15,14 +15,16 @@ int main() {
     int i;
 
     device = pcap_lookupdev(errbuf);
-    if (device == NULL)
+    if (device == NULL) {
         pcap_fatal("pcap_lookupdev", errbuf);
+    }
     printf("Sniffing on device %s\n", device);
 
     pcap_handle = pcap_open_live(device, 4096, 1, 0, errbuf);
-    if (pcap_handle == NULL)
+    if (pcap_handle == NULL) {
         pcap_fatal("pcap_open_live", errbuf);
-
+    }
+    
     for(i=0; i < 3; i++) {
         packet = pcap_next(pcap_handle, &header);
         printf("Got a %d byte packet\n", header.len);
