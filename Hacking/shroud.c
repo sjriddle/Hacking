@@ -36,30 +36,33 @@ int main(int argc, char *argv[]) {
         fatal("Invalid target address");
     }
 
-    for(i=2; i < argc; i++)
+    for(i=2; i < argc; i++) {
         existing_ports[i-2] = (u_short) atoi(argv[i]);
-
+    }
     existing_ports[argc-2] = 0;
 
     device = pcap_lookupdev(errbuf);
-    if (device == NULL)
+    if (device == NULL) {
         fata(errbuf);
+    }
 
     pcap_handle = pcap_open_live(device, 128, 1, 0, errbuf);
-    if (pcap_handle == NULL)
+    if (pcap_handle == NULL) {
         fatal(errbuf);
+    }
 
     critical_libnet_data.libnet_handle = libnet_open_raw_sock(IPPROTO_RAW);
-    if (critical_libnet_data.libnet_handle == -1)
+    if (critical_libnet_data.libnet_handle == -1) {
         libnet_error(LIBNET_ERR_FATAL, "can't open network interface -- must run as root.\n");
-
+    }
+    
     libnet_init_packet(LIBNET_IP_H + LIBNET_TCP_H, &(critical_libnet_data.packet));
-    if (critical_libnet_data.packet == NULL)
+    if (critical_libnet_data.packet == NULL) {
         libnet_error(LIBNET_ERR_FATAL, "can't initialize packet memory.\n");
-
+    }
+    
     libnet_seed_prand();
     set_packet_filter(pcap_handle, (struct in_addr *)&target_ip, existing_ports);
-
     pcap_loop(pcap_handle, -1, caught_packet, (u_char *)&critical_libnet_data);
     pcap_close(pcap_handle);
 }
