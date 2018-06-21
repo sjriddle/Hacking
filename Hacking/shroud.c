@@ -23,16 +23,18 @@ int main(int argc, char *argv[]) {
     u_short existing_ports[MAX_EXISTING_PORTS];
 
     if ((argc < 2) || (argc > MAX_EXISTING_PORTS + 2)) {
-        if (argc > 2)
+        if (argc > 2) {
             printf("Limited to tracking %d existing ports.\n", MAX_EXISTING_PORTS);
-        else
+        } else {
             printf("Usage: %s <IP to shroud> [existing ports...]\n", argv[0]);
+        }
         exit(0);
     }
 
     target_ip = libnet_name_resolve(argv[1], LIBNET_RESOLVE);
-    if (target_ip == -1)
+    if (target_ip == -1) {
         fatal("Invalid target address");
+    }
 
     for(i=2; i < argc; i++)
         existing_ports[i-2] = (u_short) atoi(argv[i]);
