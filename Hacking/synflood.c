@@ -74,7 +74,6 @@ int main(int argc, char *argv[]) {
     }
     unsleep(FLOOD_DELAY); // Wait for FLOOD_DELAY milliseconds.
   }
-
   libnet_destroy_packet(&packet); // Free packet memory
 
   // Close netowrk interface
