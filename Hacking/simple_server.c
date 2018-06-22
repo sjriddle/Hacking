@@ -18,30 +18,34 @@ int main(void) {
 	int recv_length=1, yes=1;
 	char buffer[1024];
 
-	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) == -1)
+	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) == -1) {
 		fatal("in socket");
-
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
+	}
+	
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
 		fatal("setting socket option SO_REUSEADDR");
-
+	}
+	
 	host_addr.sin_family = AF_INET;		 // Host byte order
 	host_addr.sin_port = htons(PORT);	 // Short, network byte order
 	host_addr.sin_addr.s_addr = INADDR_ANY;  // Automatically fill with my IP
 	memset(&(host_addr.sin_zero), '\0', 8);  // Zero the rest of the struct
 
-	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1)
+	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
 		fatal("binding to socket");
-
-	if (listen(sockfd, 5) == -1)
+	}
+	
+	if (listen(sockfd, 5) == -1) {
 		fatal("listening on socket");
-
+	}
+	
 	while(1) {
 		sin_size = sizeof(struct sockaddr_in);
 		new_sockfd = accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
 		
-		if(new_sockfd == -1)
+		if(new_sockfd == -1) {
 			fatal("accepting connection");
-	
+		}
 		printf("server: got connection from %s port %d\n",inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 		
 		send(new_sockfd, "Hello World!\n", 13, 0);
