@@ -44,9 +44,9 @@ int main(int argc, char *argv[]) {
    }
    
    libnet_init_packet(LIBNET_IP_H + LIBNET_TCP_H, &(critical_libnet_data.packet));
-   if (critical_libnet_data.packet == NULL)
+   if (critical_libnet_data.packet == NULL) {
       libnet_error(LIBNET_ERR_FATAL, "can't initialize packet memory.\n");
-
+   }
    libnet_seed_prand();
    set_packet_filter(pcap_handle, (struct in_addr *)&target_ip);
 
@@ -62,11 +62,13 @@ int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip) {
    sprintf(filter_string, "tcp[tcpflags] & tcp-ack != 0 and dst host %s", inet_ntoa(*target_ip));
 
    printf("DEBUG: filter string is \'%s\'\n", filter_string);
-   if(pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1)
+   if(pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1) {
       fatal("pcap_compile failed");
-
-   if(pcap_setfilter(pcap_hdl, &filter) == -1)
+   }
+   
+   if(pcap_setfilter(pcap_hdl, &filter) == -1) {
       fatal("pcap_setfilter failed");
+   }
 }
 
 void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, const u_char *packet) {
@@ -108,12 +110,14 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
       0,                                     // payload length
       (passed->packet) + LIBNET_IP_H);       // packet header memory
 
-   if (libnet_do_checksum(passed->packet, IPPROTO_TCP, LIBNET_TCP_H) == -1)
+   if (libnet_do_checksum(passed->packet, IPPROTO_TCP, LIBNET_TCP_H) == -1) {
       libnet_error(LIBNET_ERR_FATAL, "can't compute checksum\n");
-
+   }
+   
    bcount = libnet_write_ip(passed->libnet_handle, passed->packet, LIBNET_IP_H+LIBNET_TCP_H);
-   if (bcount < LIBNET_IP_H + LIBNET_TCP_H)
+   if (bcount < LIBNET_IP_H + LIBNET_TCP_H) {
       libnet_error(LIBNET_ERR_WARNING, "Warning: Incomplete packet written.");
-
+   }
+   
    usleep(5000);
 }
