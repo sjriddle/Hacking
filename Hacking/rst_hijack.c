@@ -29,17 +29,20 @@ int main(int argc, char *argv[]) {
       fatal("Invalid target address");
 
    device = pcap_lookupdev(errbuf);
-   if(device == NULL)
+   if(device == NULL) {
       fatal(errbuf);
-
+   }
+   
    pcap_handle = pcap_open_live(device, 128, 1, 0, errbuf);
-   if(pcap_handle == NULL)
+   if(pcap_handle == NULL) {
       fatal(errbuf);
-
+   }
+      
    critical_libnet_data.libnet_handle = libnet_open_raw_sock(IPPROTO_RAW);
-   if(critical_libnet_data.libnet_handle == -1)
+   if(critical_libnet_data.libnet_handle == -1) {
       libnet_error(LIBNET_ERR_FATAL, "can't open network interface.  -- this program must run as root.\n");
-
+   }
+   
    libnet_init_packet(LIBNET_IP_H + LIBNET_TCP_H, &(critical_libnet_data.packet));
    if (critical_libnet_data.packet == NULL)
       libnet_error(LIBNET_ERR_FATAL, "can't initialize packet memory.\n");
