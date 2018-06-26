@@ -20,15 +20,15 @@ int main() {
     pcap_t *pcap_handle;
 
     device = pcap_lookupdev(errbuf);
-    if (device == NULL)
+    if (device == NULL) {
         pcap_fatal("pcap_lookupdev", errbuf);
-
+    }
     printf("Sniffing on device %s\n", device);
 
     pcap_handle = pcap_open_live(device, 4096, 1, 0, errbuf);
-    if (pcap_handle == NULL)
+    if (pcap_handle == NULL) {
         pcap_fatal("pcap_open_live", errbuf);
-
+    }
     pcap_loop(pcap_handle, 3, caught_packet, NULL);
 
     pcap_close(pcap_handle);
@@ -70,19 +70,20 @@ void decode_ethernet(const u_char *header_start) {
     ethernet_header = (const struct ether_hdr *)header_start;
     printf("[[   Layer 2 :: Ethernet Header   ]]\n");
     printf("[ Source: %02x", ethernet_header->ether_src_addr[0]);
-    for(i=1; i < ETHER_ADDR_LEN; i++)
+    for(i=1; i < ETHER_ADDR_LEN; i++) {
         printf(":%02x", ethernet_header->ether_src_addr[i]);
-
+    }
     printf("\tDest: %02x", ethernet_header->ether_dest_addr[0]);
-    for(i=1; i < ETHER_ADDR_LEN; i++)
+    
+    for(i=1; i < ETHER_ADDR_LEN; i++) {
         printf(":%02x", ethernet_header->ether_dest_addr[i]);
+    }
     printf("\tType: %hu ]\n", ethernet_header->ether_type);
 }
 
 
 void decode_ip(const u_char *header_start) {
     const struct ip_hdr *ip_header;
-
     ip_header = (const struct ip_hdr *)header_start;
     printf("\t((   Layer 3 ::: IP Header   ))\n");
     printf("\t( Source: %s\t", inet_ntoa(ip_header->ip_src_addr));
@@ -106,18 +107,29 @@ u_int decode_tcp(const u_char *header_start) {
     printf("Ack #: %u\n", ntohs(tcp_header->tcp_ack));
     printf("\t\t{ Header Size: %u\tFlags: ", header_size);
 
-    if (tcp_header->tcp_flags & TCP_FIN)
+    if (tcp_header->tcp_flags & TCP_FIN) {
         printf("FIN ");
-    if (tcp_header->tcp_flags & TCP_SYN)
+    }
+    
+    if (tcp_header->tcp_flags & TCP_SYN) {
         printf("SYN ");
-    if (tcp_header->tcp_flags & TCP_RST)
+    }
+    
+    if (tcp_header->tcp_flags & TCP_RST) {
         printf("RST ");
-    if (tcp_header->tcp_flags & TCP_PUSH)
+    }
+    
+    if (tcp_header->tcp_flags & TCP_PUSH) {
         printf("PUSH ");
-    if (tcp_header->tcp_flags & TCP_ACK)
+    }
+    
+    if (tcp_header->tcp_flags & TCP_ACK) {
         printf("ACK ");
-    if (tcp_header->tcp_flags & TCP_URG)
+    }
+    
+    if (tcp_header->tcp_flags & TCP_URG) {
         printf("URG ");
+    }
     printf(" }\n");
 
     return header_size;
