@@ -5,7 +5,6 @@
 // A function to display an error message and then exit
 void fatal(char *message) {
    char error_message[100];
-
    strcpy(error_message, "[!!] Fatal Error ");
    strncat(error_message, message, 83);
    perror(error_message);
@@ -40,6 +39,6 @@ void dump(const unsigned char *data_buffer, const unsigned int length) {
 					printf(".");
 			}
 			printf("\n"); // end of the dump line (each line 16 bytes)
-		} // end if
-	} // end for
+		}
+	}
 }
