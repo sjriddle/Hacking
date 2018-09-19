@@ -20,26 +20,27 @@ int main(int argc, char *argv[]) {
    int network;
    struct data_pass critical_libnet_data;
 
-   if(argc < 1) {
+   if (argc < 1) {
       printf("Usage: %s <target IP>\n", argv[0]);
       exit(0);
    }
    target_ip = libnet_name_resolve(argv[1], LIBNET_RESOLVE);
-   if (target_ip == -1)
+   if (target_ip == -1) {
       fatal("Invalid target address");
+   }
 
    device = pcap_lookupdev(errbuf);
-   if(device == NULL) {
+   if (device == NULL) {
       fatal(errbuf);
    }
    
    pcap_handle = pcap_open_live(device, 128, 1, 0, errbuf);
-   if(pcap_handle == NULL) {
+   if (pcap_handle == NULL) {
       fatal(errbuf);
    }
       
    critical_libnet_data.libnet_handle = libnet_open_raw_sock(IPPROTO_RAW);
-   if(critical_libnet_data.libnet_handle == -1) {
+   if (critical_libnet_data.libnet_handle == -1) {
       libnet_error(LIBNET_ERR_FATAL, "can't open network interface.  -- this program must run as root.\n");
    }
    
@@ -62,11 +63,11 @@ int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip) {
    sprintf(filter_string, "tcp[tcpflags] & tcp-ack != 0 and dst host %s", inet_ntoa(*target_ip));
 
    printf("DEBUG: filter string is \'%s\'\n", filter_string);
-   if(pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1) {
+   if (pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1) {
       fatal("pcap_compile failed");
    }
    
-   if(pcap_setfilter(pcap_hdl, &filter) == -1) {
+   if (pcap_setfilter(pcap_hdl, &filter) == -1) {
       fatal("pcap_setfilter failed");
    }
 }
