@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "hacking.h"
 
-#define DATAFILE "/var/chance.data" // File to store user data
+#define DATAFILE "/var/chance.data"
 
 // Custom user struct to store information about users
 struct user {
@@ -33,7 +33,7 @@ int find_the_ace();
 void fatal(char *);
 
 // Global variables
-struct user player;      // Player struct
+struct user player;
 
 int main() {
    int choice, last_game;
