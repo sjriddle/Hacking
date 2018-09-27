@@ -40,9 +40,9 @@ int main() {
 
    srand(time(0)); // Seed the randomizer with the current time.
 
-   if(get_player_data() == -1) // Try to read player data from file.
-      register_new_player();    // If there is no data, register a new player.
-
+   if(get_player_data() == -1) { // Try to read player data from file.
+      register_new_player();     // If there is no data, register a new player.
+   }
    while(choice != 7) {
       printf("-=[ Game of Chance Menu ]=-\n");
       printf("1 - Play the Pick a Number game\n");
