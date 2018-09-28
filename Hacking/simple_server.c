@@ -7,7 +7,6 @@
 #include <arpa/inet.h>
 #include "hacking.h"
 
-// The port users will be connecting to
 #define PORT 7890
 
 int main(void) {
