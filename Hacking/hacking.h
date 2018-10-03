@@ -33,10 +33,11 @@ void dump(const unsigned char *data_buffer, const unsigned int length) {
 			printf("| ");
 			for(j=(i-(i%16)); j <= i; j++) {  // display printable bytes from line
 				byte = data_buffer[j];
-				if((byte > 31) && (byte < 127)) // outside printable char range
+				if((byte > 31) && (byte < 127)) {// outside printable char range
 					printf("%c", byte);
-				else
+				} else {
 					printf(".");
+				}
 			}
 			printf("\n"); // end of the dump line (each line 16 bytes)
 		}
