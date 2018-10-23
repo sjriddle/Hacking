@@ -90,7 +90,6 @@ int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip, u_short *port
         }
     }
     printf("DEBUG: filter string is \'%s\' \n", filter_string);
-    
     if (pcap_compile(pcap_hdl, &filter, filter_string, 0, 0) == -1) {
         fatal("pcap_compile failed");
     }
