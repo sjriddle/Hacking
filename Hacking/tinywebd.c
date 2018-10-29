@@ -58,11 +58,9 @@ int main(void) {
     host_addr.sin_port = htons(PORT);       // Short, network byte order
     host_addr.sin_addr.s_addr = INADDR_ANY; // Automatically fill with my IP
     memset(&(host_addr.sin_zero), '\0', 8); // Zero the rest of the struct
-
     if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
         fatal("binding to socket");
     }
-
     if (listen(sockfd, 20) == -1) {
         fatal("listening on socket");
     }
