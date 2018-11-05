@@ -20,7 +20,7 @@ void *ec_malloc(unsigned int size) {
    return ptr;
 }
 
-// dumps raw memory in hex byte and printable split format
+// Dumps raw memory in hex byte and printable split format
 void dump(const unsigned char *data_buffer, const unsigned int length) {
 	unsigned char byte;
 	unsigned int i, j;
