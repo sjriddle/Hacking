@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     pcap_close(pcap_handle);
 }
 
-// Sets a packet filter to look for TCP connection to target_ip
+// Sets a packet filter to look for TCP connection to target ip
 int set_packet_filter(pcap_t *pcap_hdl, struct in_addr *target_ip, u_short *ports) {
     struct bpf_program filter;
     char *str_ptr, filter_string[90 + (25 * MAX_EXISTING_PORTS)];
