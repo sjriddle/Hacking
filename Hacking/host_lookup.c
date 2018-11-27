@@ -10,7 +10,6 @@
 int main(int argc, char *argv[]) {
     struct hostent *host_info;
     struct in_addr *address;
-
     if(argc < 2) {
         printf("Usage: %s <hostname>\n", argv[0]);
         exit(1);
