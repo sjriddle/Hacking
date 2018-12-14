@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
     u_long target_ip;
     int network, i;
     struct data_pass critical_libnet_data;
+    
     u_short existing_ports[MAX_EXISTING_PORTS];
-
     if ((argc < 2) || (argc > MAX_EXISTING_PORTS + 2)) {
         if (argc > 2) {
             printf("Limited to tracking %d existing ports.\n", MAX_EXISTING_PORTS);
@@ -107,10 +107,8 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
     int bcount;
 
     passed = (struct data_pass *) user_args;
-
     IPhdr = (struct libnet_ip_hdr *) (packet + LIBNET_ETH_H);
     TCPhdr = (struct libnet_tcp_hdr *) (packet + LIBNET_ETH_H + LIBNET_TCP_H);
-
     libnet_build_ip(LIBNET_TCP_H,      // size of the packet sans IP header
        IPTOS_LOWDELAY,                 // IP tos
        libnet_get_prand(LIBNET_PRu16), // IP ID (randomized)
