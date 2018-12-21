@@ -151,17 +151,21 @@ void update_player_data() {
    char burned_byte;
 
    fd = open(DATAFILE, O_RDWR);
-   if(fd == -1) // If open fails here, something is really wrong.
+   if(fd == -1) {
       fatal("in update_player_data() while opening file");
-   read(fd, &read_uid, 4);       // Read the uid from the first struct.
-   while(read_uid != player.uid) {  // Loop until correct uid is found.
-      for(i=0; i < sizeof(struct user) - 4; i++)  // Read through the
-         read(fd, &burned_byte, 1);            // rest of that struct.
-      read(fd, &read_uid, 4);     // Read the uid from the next struct.
    }
-   write(fd, &(player.credits), 4);   // Update credits.
-   write(fd, &(player.highscore), 4); // Update highscore.
-   write(fd, &(player.name), 100);    // Update name.
+   // Read the uid from the first struct, loop until correct uid is found.
+   read(fd, &read_uid, 4);       
+   while(read_uid != player.uid) {
+      for(i=0; i < sizeof(struct user) - 4; i++) {
+         read(fd, &burned_byte, 1);
+      }
+      read(fd, &read_uid, 4);
+   }
+   // Update credits, highscore, and name
+   write(fd, &(player.credits), 4);
+   write(fd, &(player.highscore), 4);
+   write(fd, &(player.name), 100);
    close(fd);
 }
 
