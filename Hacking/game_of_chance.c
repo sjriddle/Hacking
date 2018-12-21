@@ -101,18 +101,24 @@ int get_player_data() {
    uid = getuid();
 
    fd = open(DATAFILE, O_RDONLY);
-   if(fd == -1) // Can't open the file, maybe it doesn't exist
+   // Can't open the file, maybe it doesn't exist
+   if(fd == -1) {
       return -1;
-   read_bytes = read(fd, &entry, sizeof(struct user)); // Read the first chunk.
-   while(entry.uid != uid && read_bytes > 0) {  // Loop until proper uid is found.
-      read_bytes = read(fd, &entry, sizeof(struct user)); // Keep reading.
    }
-   close(fd); // close the file
-   if(read_bytes  < sizeof(struct user)) // This means that the end of file was reached.
+   // Read the first chunk, loop until proper uid is found, then keep reading
+   read_bytes = read(fd, &entry, sizeof(struct user));
+   while(entry.uid != uid && read_bytes > 0) {
+      read_bytes = read(fd, &entry, sizeof(struct user));
+   }
+   close(fd);
+   // This means that the end of file was reached.
+   if(read_bytes  < sizeof(struct user)) {
       return -1;
-   else
-      player = entry; // Copy the read entry into the player struct.
-   return 1; // Return a success.
+   } else {
+      player = entry;
+   }
+   // Return a success.
+   return 1;
 }
 
 // This is the new user registration function.
@@ -128,8 +134,9 @@ void register_new_player()  {
    player.highscore = player.credits = 100;
 
    fd = open(DATAFILE, O_WRONLY|O_CREAT|O_APPEND, S_IRUSR|S_IWUSR);
-   if(fd == -1)
+   if(fd == -1) {
       fatal("in register_new_player() while opening file");
+   }
    write(fd, &player, sizeof(struct user));
    close(fd);
 
