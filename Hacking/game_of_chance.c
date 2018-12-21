@@ -8,7 +8,7 @@
 
 #define DATAFILE "/var/chance.data"
 
-// Custom user struct to store information about users
+// Custom users struct to store user information
 struct user {
    int uid;
    int credits;
@@ -17,7 +17,7 @@ struct user {
    int (*current_game) ();
 };
 
-// function prototypes
+// Function prototypes
 int get_player_data();
 void register_new_player();
 void update_player_data();
@@ -40,8 +40,8 @@ int main() {
 
    srand(time(0)); // Seed the randomizer with the current time.
 
-   if(get_player_data() == -1) { // Try to read player data from file.
-      register_new_player();     // If there is no data, register a new player.
+   if(get_player_data() == -1) {
+      register_new_player();
    }
    while(choice != 7) {
       printf("-=[ Game of Chance Menu ]=-\n");
@@ -56,23 +56,27 @@ int main() {
       printf("[You have %u credits] ->  ", player.credits);
       scanf("%d", &choice);
 
-      if((choice < 1) || (choice > 7))
+      if((choice < 1) || (choice > 7)) {
          printf("\n[!!] The number %d is an invalid selection.\n\n", choice);
-      else if (choice < 4) {  // Othewise, choice was a game of some sort.
-            if(choice != last_game) { // If the function ptr isn't set
-               if(choice == 1)        // then point it at the selected game
+      } else if (choice < 4) {
+            // If the function ptr isn't set, point it at the selected game
+            if(choice != last_game) {
+               if(choice == 1) {
                   player.current_game = pick_a_number;
-               else if(choice == 2)
+               } else if(choice == 2) {
                   player.current_game = dealer_no_match;
-               else
+               } else {
                   player.current_game = find_the_ace;
-               last_game = choice;   // and set last_game.
+               }
+               // Set the last game
+               last_game = choice;
             }
-            play_the_game();   // Play the game.
+            play_the_game();   
          }
-      else if (choice == 4)
+      // Play the game.
+      else if (choice == 4) {
          show_highscore();
-      else if (choice == 5) {
+      } else if (choice == 5) {
          printf("\nChange user name\n");
          printf("Enter your new name: ");
          input_name();
