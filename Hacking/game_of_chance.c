@@ -206,16 +206,17 @@ void jackpot() {
 // scanf("%s", &whatever) will stop input at the first space.
 void input_name() {
    char *name_ptr, input_char='\n';
-   while(input_char == '\n')    // Flush any leftover
-      scanf("%c", &input_char); // newline chars.
-
-   name_ptr = (char *) &(player.name); // name_ptr = player name's address
-   while(input_char != '\n') {  // Loop until newline.
-      *name_ptr = input_char;   // Put the input char into name field.
-      scanf("%c", &input_char); // Get the next char.
-      name_ptr++;               // Increment the name pointer.
+   while(input_char == '\n') {
+      scanf("%c", &input_char);
    }
-   *name_ptr = 0;  // Terminate the string.
+   // name_ptr = player name's address, Loop until newline.
+   name_ptr = (char *) &(player.name); 
+   while(input_char != '\n') {
+      *name_ptr = input_char;
+      scanf("%c", &input_char);
+      name_ptr++;
+   }
+   *name_ptr = 0;
 }
 
 // This function prints the 3 cards for the Find the Ace game.
@@ -228,11 +229,12 @@ void print_cards(char *message, char *cards, int user_pick) {
    printf("\n\t*** %s ***\n", message);
    printf("      \t._.\t._.\t._.\n");
    printf("Cards:\t|%c|\t|%c|\t|%c|\n\t", cards[0], cards[1], cards[2]);
-   if(user_pick == -1)
+   if(user_pick == -1) {
       printf(" 1 \t 2 \t 3\n");
-   else {
-      for(i=0; i < user_pick; i++)
+   } else {
+      for(i=0; i < user_pick; i++) {
          printf("\t");
+      }
       printf(" ^-- your pick\n");
    }
 }
@@ -248,12 +250,14 @@ int take_wager(int available_credits, int previous_wager) {
 
    printf("How many of your %d credits would you like to wager?  ", available_credits);
    scanf("%d", &wager);
-   if(wager < 1) {   // Make sure the wager is greater than 0.
+   // Make sure the wager is greater than 0.   
+   if(wager < 1) {
       printf("Nice try, but you must wager a positive number!\n");
       return -1;
    }
+   // Confirm available credits   
    total_wager = previous_wager + wager;
-   if(total_wager > available_credits) {  // Confirm available credits
+   if(total_wager > available_credits) { 
       printf("Your total wager of %d is more than you have!\n", total_wager);
       printf("You only have %d available credits, try again.\n", available_credits);
       return -1;
