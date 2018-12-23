@@ -275,20 +275,27 @@ void play_the_game() {
 
    while(play_again) {
       printf("\n[DEBUG] current_game pointer @ 0x%08x\n", player.current_game);
-      if(player.current_game() != -1) { // If the game plays without error and
-         if(player.credits > player.highscore)  // a new high score is set,
-            player.highscore = player.credits;  // update the highscore.
+      // If game plays w/o erros, a new high score is set and updated
+      if(player.current_game() != -1) {
+         if(player.credits > player.highscore) {
+            player.highscore = player.credits;
+         }
          printf("\nYou now have %u credits\n", player.credits);
-         update_player_data(); // Write the new credit total to file.
+         
+         // Write the new credit total to file.
+         update_player_data();
          printf("Would you like to play again? (y/n)  ");
          selection = '\n';
-         while(selection == '\n')   // Flush any extra newlines.
+         while(selection == '\n') {
             scanf("%c", &selection);
-         if(selection == 'n')
+         }
+         if(selection == 'n') {
             play_again = 0;
+         }
+      } else {
+         // Game returned an error. Returns to main menu.
+         play_again = 0;
       }
-      else  // This means the game returned an error,
-         play_again = 0; // so return to main menu.
    }
 }
 
