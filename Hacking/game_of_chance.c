@@ -308,21 +308,24 @@ int pick_a_number() {
    printf("This game costs 10 credits to play. Simply pick a number\n");
    printf("between 1 and 20, and if you pick the winning number, you\n");
    printf("will win the jackpot of 100 credits!\n\n");
-   winning_number = (rand() % 20) + 1; // Pick a number between 1 and 20.
+   winning_number = (rand() % 20) + 1;
+   
+   // Not enough credits to play
    if(player.credits < 10) {
       printf("You only have %d credits. That's not enough to play!\n\n", player.credits);
-      return -1;  // Not enough credits to play
+      return -1;
    }
-   player.credits -= 10; // Deduct 10 credits
+   player.credits -= 10;
    printf("10 credits have been deducted from your account.\n");
    printf("Pick a number between 1 and 20: ");
    scanf("%d", &pick);
 
    printf("The winning number is %d\n", winning_number);
-   if(pick == winning_number)
+   if(pick == winning_number) {
       jackpot();
-   else
+   } else {
       printf("Sorry, you didn't win.\n");
+   }
    return 0;
 }
 
@@ -340,17 +343,22 @@ int dealer_no_match() {
       printf("You don't have any credits to wager!\n\n");
       return -1;
    }
-   while(wager == -1)
+   while(wager == -1) {
       wager = take_wager(player.credits, 0);
+   }
 
    printf("\t\t::: Dealing out 16 random numbers :::\n");
    for(i=0; i < 16; i++) {
-      numbers[i] = rand() % 100; // pick a number 0 to 99
+      numbers[i] = rand() % 100;
       printf("%2d\t", numbers[i]);
-      if(i%8 == 7)  // Print a line break every 8 numbers.
+      // Print a line break every 8 numbers.
+      if(i%8 == 7) {
          printf("\n");
+      }
    }
-   for(i=0; i < 15; i++) {  // Loop looking for matches
+   
+   // Loop looking for matches
+   for(i=0; i < 15; i++) {
       j = i + 1;
       while(j < 16) {
          if(numbers[i] == numbers[j])
