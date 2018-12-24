@@ -383,8 +383,9 @@ int find_the_ace() {
    int i, ace, total_wager;
    int invalid_choice, pick = -1, wager_one = -1, wager_two = -1;
    char choice_two, cards[3] = {'X', 'X', 'X'};
-
-   ace = rand()%3; // Place the ace randomly.
+   
+   // Place the ace randomly.
+   ace = rand()%3;
 
    printf("******* Find the Ace *******\n");
    printf("In this game, you can wager up to all of your credits.\n");
@@ -399,34 +400,43 @@ int find_the_ace() {
       return -1;
    }
 
-   while(wager_one == -1) // Loop until valid wager is made.
+   // Loop until valid wager is made.
+   while(wager_one == -1) {
       wager_one = take_wager(player.credits, 0);
-
+   }
    print_cards("Dealing cards", cards, -1);
    pick = -1;
-   while((pick < 1) || (pick > 3)) { // Loop until valid pick is made.
+   // Loop until valid pick is made.
+   while((pick < 1) || (pick > 3)) {
       printf("Select a card: 1, 2, or 3  ");
       scanf("%d", &pick);
    }
-   pick--; // Adjust the pick since card numbering starts at 0.
+   // Adjust the pick since card numbering starts at 0.
+   pick--;
    i=0;
-   while(i == ace || i == pick) // Keep looping until
-      i++;                      // we find a valid queen to reveal.
+   // Keep looping until we find a valid queen to reveal.
+   while(i == ace || i == pick) {
+      i++;
+   }
    cards[i] = 'Q';
    print_cards("Revealing a queen", cards, pick);
    invalid_choice = 1;
-   while(invalid_choice) {   // Loop until valid choice is made.
+   // Loop until valid choice is made.
+   while(invalid_choice) {
       printf("Would you like to:\n[c]hange your pick\tor\t[i]ncrease your wager?\n");
       printf("Select c or i:  ");
+      
       choice_two = '\n';
-      while(choice_two == '\n') // Flush extra newlines.
+      while(choice_two == '\n') {
          scanf("%c", &choice_two);
-      if(choice_two == 'i') {   // Increase wager.
-            invalid_choice=0;   // This is a valid choice.
-            while(wager_two == -1)  // Loop until valid second wager is made.
+      }
+      if(choice_two == 'i') {
+            invalid_choice=0;
+            while(wager_two == -1) {
                wager_two = take_wager(player.credits, wager_one);
+            }
          }
-      if(choice_two == 'c') {    // Change pick.
+      if(choice_two == 'c') {
          i = invalid_choice = 0; // Valid choice
          while(i == pick || cards[i] == 'Q') // Loop until the other card
             i++;// is found,
