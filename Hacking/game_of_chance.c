@@ -437,30 +437,33 @@ int find_the_ace() {
             }
          }
       if(choice_two == 'c') {
-         i = invalid_choice = 0; // Valid choice
-         while(i == pick || cards[i] == 'Q') // Loop until the other card
-            i++;// is found,
-         pick = i;// and then swap pick.
+         i = invalid_choice = 0;
+         while(i == pick || cards[i] == 'Q') {
+            i++;
+         }
+         pick = i;
          printf("Your card pick has been changed to card %d\n", pick+1);
       }
    }
 
-   for(i=0; i < 3; i++) {  // Reveal all of the cards.
-      if(ace == i)
+   // Reveal all of the cards.
+   for(i=0; i < 3; i++) {
+      if(ace == i) {
          cards[i] = 'A';
-      else
+      } else {
          cards[i] = 'Q';
+      }
    }
    print_cards("End result", cards, pick);
 
-   if(pick == ace) {  // handle win
+   if(pick == ace) {
       printf("You have won %d credits from your first wager\n", wager_one);
       player.credits += wager_one;
       if(wager_two != -1) {
          printf("and an additional %d credits from your second wager!\n", wager_two);
          player.credits += wager_two;
       }
-   } else { // handle loss
+   } else {
       printf("You have lost %d credits from your first wager\n", wager_one);
       player.credits -= wager_one;
       if(wager_two != -1) {
