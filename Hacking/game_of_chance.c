@@ -253,14 +253,15 @@ void print_cards(char *message, char *cards, int user_pick) {
 // the wager amount otherwise.
 int take_wager(int available_credits, int previous_wager) {
    int wager, total_wager;
-
    printf("How many of your %d credits would you like to wager?  ", available_credits);
    scanf("%d", &wager);
+   
    // Make sure the wager is greater than 0.   
    if(wager < 1) {
       printf("Nice try, but you must wager a positive number!\n");
       return -1;
    }
+   
    // Confirm available credits   
    total_wager = previous_wager + wager;
    if(total_wager > available_credits) { 
@@ -281,6 +282,7 @@ void play_the_game() {
 
    while(play_again) {
       printf("\n[DEBUG] current_game pointer @ 0x%08x\n", player.current_game);
+      
       // If game plays w/o erros, a new high score is set and updated
       if(player.current_game() != -1) {
          if(player.credits > player.highscore) {
@@ -372,6 +374,7 @@ int dealer_no_match() {
          j++;
       }
    }
+   
    if(match != -1) {
       printf("The dealer matched the number %d!\n", match);
       printf("You lose %d credits.\n", wager);
@@ -392,7 +395,6 @@ int find_the_ace() {
    
    // Place the ace randomly.
    ace = rand()%3;
-
    printf("******* Find the Ace *******\n");
    printf("In this game, you can wager up to all of your credits.\n");
    printf("Three cards will be dealt out, two queens and one ace.\n");
@@ -427,6 +429,7 @@ int find_the_ace() {
    cards[i] = 'Q';
    print_cards("Revealing a queen", cards, pick);
    invalid_choice = 1;
+   
    // Loop until valid choice is made.
    while(invalid_choice) {
       printf("Would you like to:\n[c]hange your pick\tor\t[i]ncrease your wager?\n");
