@@ -37,8 +37,9 @@ struct user player;
 
 int main() {
    int choice, last_game;
-
-   srand(time(0)); // Seed the randomizer with the current time.
+   
+   // Seed the randomizer with the current time.
+   srand(time(0));
 
    if(get_player_data() == -1) {
       register_new_player();
@@ -97,7 +98,6 @@ int main() {
 int get_player_data() {
    int fd, uid, read_bytes;
    struct user entry;
-
    uid = getuid();
 
    fd = open(DATAFILE, O_RDONLY);
@@ -111,6 +111,7 @@ int get_player_data() {
       read_bytes = read(fd, &entry, sizeof(struct user));
    }
    close(fd);
+   
    // This means that the end of file was reached.
    if(read_bytes  < sizeof(struct user)) {
       return -1;
@@ -154,6 +155,7 @@ void update_player_data() {
    if(fd == -1) {
       fatal("in update_player_data() while opening file");
    }
+   
    // Read the uid from the first struct, loop until correct uid is found.
    read(fd, &read_uid, 4);       
    while(read_uid != player.uid) {
@@ -162,6 +164,7 @@ void update_player_data() {
       }
       read(fd, &read_uid, 4);
    }
+   
    // Update credits, highscore, and name
    write(fd, &(player.credits), 4);
    write(fd, &(player.highscore), 4);
@@ -179,19 +182,22 @@ void show_highscore() {
 
    printf("\n====================| HIGH SCORE |====================\n");
    fd = open(DATAFILE, O_RDONLY);
-   if(fd == -1)
+   if(fd == -1) {
       fatal("in show_highscore() while opening file");
-   while(read(fd, &entry, sizeof(struct user)) > 0) { // Loop until end of file.
-      if(entry.highscore > top_score) {   // If there is a higher score,
-            top_score = entry.highscore;  // set top_score to that score
-            strcpy(top_name, entry.name); // and top_name to that username.
+   }
+   // Loop until end of file. If higher score, set top_score/name
+   while(read(fd, &entry, sizeof(struct user)) > 0) {
+      if(entry.highscore > top_score) {
+            top_score = entry.highscore;
+            strcpy(top_name, entry.name);
          }
    }
    close(fd);
-   if(top_score > player.highscore)
+   if(top_score > player.highscore) {
       printf("%s has the high score of %u\n", top_name, top_score);
-   else
+   } else {
       printf("You currently have the high score of %u credits!\n", player.highscore);
+   }
    printf("======================================================\n\n");
 }
 
@@ -225,7 +231,6 @@ void input_name() {
 // -1, then the selection numbers are displayed.
 void print_cards(char *message, char *cards, int user_pick) {
    int i;
-
    printf("\n\t*** %s ***\n", message);
    printf("      \t._.\t._.\t._.\n");
    printf("Cards:\t|%c|\t|%c|\t|%c|\n\t", cards[0], cards[1], cards[2]);
