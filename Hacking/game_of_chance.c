@@ -74,7 +74,6 @@ int main() {
             }
             play_the_game();   
          }
-      // Play the game.
       else if (choice == 4) {
          show_highscore();
       } else if (choice == 5) {
@@ -82,8 +81,7 @@ int main() {
          printf("Enter your new name: ");
          input_name();
          printf("Your name has been changed.\n\n");
-      }
-      else if (choice == 6) {
+      } else if (choice == 6) {
          printf("\nYour account has been reset with 100 credits.\n\n");
          player.credits = 100;
       }
@@ -105,6 +103,7 @@ int get_player_data() {
    if(fd == -1) {
       return -1;
    }
+   
    // Read the first chunk, loop until proper uid is found, then keep reading
    read_bytes = read(fd, &entry, sizeof(struct user));
    while(entry.uid != uid && read_bytes > 0) {
@@ -185,6 +184,7 @@ void show_highscore() {
    if(fd == -1) {
       fatal("in show_highscore() while opening file");
    }
+   
    // Loop until end of file. If higher score, set top_score/name
    while(read(fd, &entry, sizeof(struct user)) > 0) {
       if(entry.highscore > top_score) {
@@ -193,6 +193,7 @@ void show_highscore() {
          }
    }
    close(fd);
+   
    if(top_score > player.highscore) {
       printf("%s has the high score of %u\n", top_name, top_score);
    } else {
