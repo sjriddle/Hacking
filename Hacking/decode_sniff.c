@@ -10,13 +10,11 @@ u_int decode_tcp(const u_char *);
 
 void caught_packet(u_char *, const struct pcap_pkthdr *, const u_char *);
 
-
 int main() {
     struct pcap_pkthdr cap_header;
     const u_char *packet, *pkt_data;
     char errbuf[PCAP_ERRBUF_SIZE];
     char *device;
-
     pcap_t *pcap_handle;
 
     device = pcap_lookupdev(errbuf);
@@ -30,7 +28,6 @@ int main() {
         pcap_fatal("pcap_open_live", errbuf);
     }
     pcap_loop(pcap_handle, 3, caught_packet, NULL);
-
     pcap_close(pcap_handle);
 }
 
@@ -38,7 +35,6 @@ int main() {
 void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, const u_char *packet) {
     int tcp_header_length, total_header_size, pkt_data_len;
     u_char *pkt_data;
-
     printf("==== Got a %d byte packet ====\n", cap_header->len);
 
     decode_ethernet(packet);
@@ -131,6 +127,5 @@ u_int decode_tcp(const u_char *header_start) {
         printf("URG ");
     }
     printf(" }\n");
-
     return header_size;
 }
