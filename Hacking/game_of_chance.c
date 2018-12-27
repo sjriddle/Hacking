@@ -17,7 +17,6 @@ struct user {
    int (*current_game) ();
 };
 
-// Function prototypes
 int get_player_data();
 void register_new_player();
 void update_player_data();
@@ -117,7 +116,6 @@ int get_player_data() {
    } else {
       player = entry;
    }
-   // Return a success.
    return 1;
 }
 
