@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
    struct pcap_pkthdr cap_header;
    const u_char *packet, *pkt_data;
    pcap_t *pcap_handle;
-   char errbuf[PCAP_ERRBUF_SIZE]; // same size as LIBNET_ERRBUF_SIZE
+   char errbuf[PCAP_ERRBUF_SIZE];
    char *device;
    u_long target_ip;
    int network;
@@ -78,15 +78,14 @@ void caught_packet(u_char *user_args, const struct pcap_pkthdr *cap_header, cons
    struct libnet_tcp_hdr *TCPhdr;
    struct data_pass *passed;
    int bcount;
-
-   passed = (struct data_pass *) user_args; // pass data using a pointer to a struct
+   
+   // Pass data using a pointer to a struct
+   passed = (struct data_pass *) user_args;
    IPhdr = (struct libnet_ip_hdr *) (packet + LIBNET_ETH_H);
    TCPhdr = (struct libnet_tcp_hdr *) (packet + LIBNET_ETH_H + LIBNET_TCP_H);
 
-   printf("resetting TCP connection from %s:%d ",
-         inet_ntoa(IPhdr->ip_src), htons(TCPhdr->th_sport));
-   printf("<---> %s:%d\n",
-         inet_ntoa(IPhdr->ip_dst), htons(TCPhdr->th_dport));
+   printf("resetting TCP connection from %s:%d ", inet_ntoa(IPhdr->ip_src), htons(TCPhdr->th_sport));
+   printf("<---> %s:%d\n", inet_ntoa(IPhdr->ip_dst), htons(TCPhdr->th_dport));
 
    libnet_build_ip(LIBNET_TCP_H,      // size of the packet sans IP header
       IPTOS_LOWDELAY,                 // IP tos
