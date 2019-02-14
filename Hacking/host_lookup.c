@@ -14,7 +14,6 @@ int main(int argc, char *argv[]) {
         printf("Usage: %s <hostname>\n", argv[0]);
         exit(1);
     }
-
     host_info = gethostbyname(argv[1]);
     if(host_info == NULL) {
         printf("Couldn't lookup %s\n", argv[1]);
