@@ -14,7 +14,6 @@ void fatal(char *);
 int main(int argc, char *argv[]) {
     int userid, printing = 1, fd;
     char searchstring[100];
-
     if (argc > 1) {
         strcpy(searchstring, argv[1]);
     } else {
@@ -37,7 +36,6 @@ int main(int argc, char *argv[]) {
 int print_notes(int fd, int uid, char *searchstring) {
     int note_length;
     char byte = 0, note_buffer[100];
-
     note_length = find_user_note(fd, uid);
     if (note_length == -1) {
         return 0;
