@@ -9,6 +9,7 @@
 
 #define PORT 7890
 
+// This will run and begin a server on port 7890
 int main(void) {
 	// Listen on sock_fd, new connection on new_fd
 	int sockfd, new_sockfd;  
@@ -16,7 +17,6 @@ int main(void) {
 	socklen_t sin_size;
 	int recv_length=1, yes=1;
 	char buffer[1024];
-
 	if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) == -1) {
 		fatal("in socket");
 	}
@@ -29,7 +29,7 @@ int main(void) {
 	host_addr.sin_port = htons(PORT);	 // Short, network byte order
 	host_addr.sin_addr.s_addr = INADDR_ANY;  // Automatically fill with my IP
 	memset(&(host_addr.sin_zero), '\0', 8);  // Zero the rest of the struct
-
+	
 	if (bind(sockfd, (struct sockaddr *)&host_addr, sizeof(struct sockaddr)) == -1) {
 		fatal("binding to socket");
 	}
@@ -41,7 +41,6 @@ int main(void) {
 	while(1) {
 		sin_size = sizeof(struct sockaddr_in);
 		new_sockfd = accept(sockfd, (struct sockaddr *)&client_addr, &sin_size);
-		
 		if(new_sockfd == -1) {
 			fatal("accepting connection");
 		}
@@ -49,7 +48,6 @@ int main(void) {
 		
 		send(new_sockfd, "Hello World!\n", 13, 0);
 		recv_length = recv(new_sockfd, &buffer, 1024, 0);
-		
 		while(recv_length > 0) {
 			printf("RECV: %d bytes\n", recv_length);
 			dump(buffer, recv_length);
