@@ -40,7 +40,7 @@ int main() {
    // Seed the randomizer with the current time.
    srand(time(0));
 
-   if(get_player_data() == -1) {
+   if (get_player_data() == -1) {
       register_new_player();
    }
    while(choice != 7) {
@@ -56,14 +56,14 @@ int main() {
       printf("[You have %u credits] ->  ", player.credits);
       scanf("%d", &choice);
 
-      if((choice < 1) || (choice > 7)) {
+      if ((choice < 1) || (choice > 7)) {
          printf("\n[!!] The number %d is an invalid selection.\n\n", choice);
       } else if (choice < 4) {
             // If the function ptr isn't set, point it at the selected game
-            if(choice != last_game) {
-               if(choice == 1) {
+            if (choice != last_game) {
+               if (choice == 1) {
                   player.current_game = pick_a_number;
-               } else if(choice == 2) {
+               } else if (choice == 2) {
                   player.current_game = dealer_no_match;
                } else {
                   player.current_game = find_the_ace;
@@ -99,7 +99,7 @@ int get_player_data() {
 
    fd = open(DATAFILE, O_RDONLY);
    // Can't open the file, maybe it doesn't exist
-   if(fd == -1) {
+   if (fd == -1) {
       return -1;
    }
    
@@ -111,7 +111,7 @@ int get_player_data() {
    close(fd);
    
    // This means that the end of file was reached.
-   if(read_bytes  < sizeof(struct user)) {
+   if (read_bytes  < sizeof(struct user)) {
       return -1;
    } else {
       player = entry;
@@ -132,7 +132,7 @@ void register_new_player()  {
    player.highscore = player.credits = 100;
 
    fd = open(DATAFILE, O_WRONLY|O_CREAT|O_APPEND, S_IRUSR|S_IWUSR);
-   if(fd == -1) {
+   if (fd == -1) {
       fatal("in register_new_player() while opening file");
    }
    write(fd, &player, sizeof(struct user));
@@ -147,9 +147,8 @@ void register_new_player()  {
 void update_player_data() {
    int fd, i, read_uid;
    char burned_byte;
-
    fd = open(DATAFILE, O_RDWR);
-   if(fd == -1) {
+   if (fd == -1) {
       fatal("in update_player_data() while opening file");
    }
    
@@ -179,20 +178,20 @@ void show_highscore() {
 
    printf("\n====================| HIGH SCORE |====================\n");
    fd = open(DATAFILE, O_RDONLY);
-   if(fd == -1) {
+   if (fd == -1) {
       fatal("in show_highscore() while opening file");
    }
    
    // Loop until end of file. If higher score, set top_score/name
    while(read(fd, &entry, sizeof(struct user)) > 0) {
-      if(entry.highscore > top_score) {
+      if (entry.highscore > top_score) {
             top_score = entry.highscore;
             strcpy(top_name, entry.name);
          }
    }
    close(fd);
    
-   if(top_score > player.highscore) {
+   if (top_score > player.highscore) {
       printf("%s has the high score of %u\n", top_name, top_score);
    } else {
       printf("You currently have the high score of %u credits!\n", player.highscore);
@@ -207,14 +206,12 @@ void jackpot() {
    player.credits += 100;
 }
 
-// This function is used to input the player name, since
-// scanf("%s", &whatever) will stop input at the first space.
+// This function is used to input the player name
 void input_name() {
    char *name_ptr, input_char='\n';
    while(input_char == '\n') {
       scanf("%c", &input_char);
    }
-   // name_ptr = player name's address, Loop until newline.
    name_ptr = (char *) &(player.name); 
    while(input_char != '\n') {
       *name_ptr = input_char;
@@ -233,7 +230,7 @@ void print_cards(char *message, char *cards, int user_pick) {
    printf("\n\t*** %s ***\n", message);
    printf("      \t._.\t._.\t._.\n");
    printf("Cards:\t|%c|\t|%c|\t|%c|\n\t", cards[0], cards[1], cards[2]);
-   if(user_pick == -1) {
+   if (user_pick == -1) {
       printf(" 1 \t 2 \t 3\n");
    } else {
       for(i=0; i < user_pick; i++) {
@@ -255,14 +252,14 @@ int take_wager(int available_credits, int previous_wager) {
    scanf("%d", &wager);
    
    // Make sure the wager is greater than 0.   
-   if(wager < 1) {
+   if (wager < 1) {
       printf("Nice try, but you must wager a positive number!\n");
       return -1;
    }
    
    // Confirm available credits   
    total_wager = previous_wager + wager;
-   if(total_wager > available_credits) { 
+   if (total_wager > available_credits) { 
       printf("Your total wager of %d is more than you have!\n", total_wager);
       printf("You only have %d available credits, try again.\n", available_credits);
       return -1;
@@ -282,8 +279,8 @@ void play_the_game() {
       printf("\n[DEBUG] current_game pointer @ 0x%08x\n", player.current_game);
       
       // If game plays w/o erros, a new high score is set and updated
-      if(player.current_game() != -1) {
-         if(player.credits > player.highscore) {
+      if (player.current_game() != -1) {
+         if (player.credits > player.highscore) {
             player.highscore = player.credits;
          }
          printf("\nYou now have %u credits\n", player.credits);
@@ -295,7 +292,7 @@ void play_the_game() {
          while(selection == '\n') {
             scanf("%c", &selection);
          }
-         if(selection == 'n') {
+         if (selection == 'n') {
             play_again = 0;
          }
       } else {
@@ -317,7 +314,7 @@ int pick_a_number() {
    winning_number = (rand() % 20) + 1;
    
    // Not enough credits to play
-   if(player.credits < 10) {
+   if (player.credits < 10) {
       printf("You only have %d credits. That's not enough to play!\n\n", player.credits);
       return -1;
    }
@@ -327,7 +324,7 @@ int pick_a_number() {
    scanf("%d", &pick);
 
    printf("The winning number is %d\n", winning_number);
-   if(pick == winning_number) {
+   if (pick == winning_number) {
       jackpot();
    } else {
       printf("Sorry, you didn't win.\n");
@@ -345,7 +342,7 @@ int dealer_no_match() {
    printf("The dealer will deal out 16 random numbers between 0 and 99.\n");
    printf("If there are no matches among them, you double your money!\n\n");
 
-   if(player.credits == 0) {
+   if (player.credits == 0) {
       printf("You don't have any credits to wager!\n\n");
       return -1;
    }
@@ -358,7 +355,7 @@ int dealer_no_match() {
       numbers[i] = rand() % 100;
       printf("%2d\t", numbers[i]);
       // Print a line break every 8 numbers.
-      if(i%8 == 7) {
+      if (i%8 == 7) {
          printf("\n");
       }
    }
@@ -367,13 +364,13 @@ int dealer_no_match() {
    for(i=0; i < 15; i++) {
       j = i + 1;
       while(j < 16) {
-         if(numbers[i] == numbers[j])
+         if (numbers[i] == numbers[j])
             match = numbers[i];
          j++;
       }
    }
    
-   if(match != -1) {
+   if (match != -1) {
       printf("The dealer matched the number %d!\n", match);
       printf("You lose %d credits.\n", wager);
       player.credits -= wager;
@@ -401,7 +398,7 @@ int find_the_ace() {
    printf("At this point, you may either select a different card or\n");
    printf("increase your wager.\n\n");
 
-   if(player.credits == 0) {
+   if (player.credits == 0) {
       printf("You don't have any credits to wager!\n\n");
       return -1;
    }
@@ -412,14 +409,15 @@ int find_the_ace() {
    }
    print_cards("Dealing cards", cards, -1);
    pick = -1;
+   
    // Loop until valid pick is made.
    while((pick < 1) || (pick > 3)) {
       printf("Select a card: 1, 2, or 3  ");
       scanf("%d", &pick);
    }
-   // Adjust the pick since card numbering starts at 0.
    pick--;
    i=0;
+   
    // Keep looping until we find a valid queen to reveal.
    while(i == ace || i == pick) {
       i++;
@@ -437,13 +435,13 @@ int find_the_ace() {
       while(choice_two == '\n') {
          scanf("%c", &choice_two);
       }
-      if(choice_two == 'i') {
+      if (choice_two == 'i') {
             invalid_choice=0;
             while(wager_two == -1) {
                wager_two = take_wager(player.credits, wager_one);
             }
          }
-      if(choice_two == 'c') {
+      if (choice_two == 'c') {
          i = invalid_choice = 0;
          while(i == pick || cards[i] == 'Q') {
             i++;
@@ -455,7 +453,7 @@ int find_the_ace() {
 
    // Reveal all of the cards.
    for(i=0; i < 3; i++) {
-      if(ace == i) {
+      if (ace == i) {
          cards[i] = 'A';
       } else {
          cards[i] = 'Q';
@@ -463,17 +461,17 @@ int find_the_ace() {
    }
    print_cards("End result", cards, pick);
 
-   if(pick == ace) {
+   if (pick == ace) {
       printf("You have won %d credits from your first wager\n", wager_one);
       player.credits += wager_one;
-      if(wager_two != -1) {
+      if (wager_two != -1) {
          printf("and an additional %d credits from your second wager!\n", wager_two);
          player.credits += wager_two;
       }
    } else {
       printf("You have lost %d credits from your first wager\n", wager_one);
       player.credits -= wager_one;
-      if(wager_two != -1) {
+      if (wager_two != -1) {
          printf("and an additional %d credits from your second wager!\n", wager_two);
          player.credits -= wager_two;
       }
