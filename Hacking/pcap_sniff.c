@@ -25,7 +25,7 @@ int main() {
         pcap_fatal("pcap_open_live", errbuf);
     }
     
-    for(i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         packet = pcap_next(pcap_handle, &header);
         printf("Got a %d byte packet\n", header.len);
         dump(packet, header.len);
