@@ -8,14 +8,14 @@
 #include "hacking.h"
 
 int main(void) {
-    int i, recv_length, sockfd;
-    u_char buffer[9000];
-    if ((sockfd = socket(PF_INIT, SOCK_RAW, IPPROTO_TCP)) == -1) {
-        fatal("in socket");
-    }
-    for(i=0; i < 3; i++) {
-        recv_length = recv(sockfd, buffer, 8000, 0);
-        printf("Got a %d byte packet\n", recv_length);
-        dump(buffer, recv_length);
-    }
+  int i, recv_length, sockfd;
+  u_char buffer[9000];
+  if ((sockfd = socket(PF_INIT, SOCK_RAW, IPPROTO_TCP)) == -1) {
+    fatal("in socket");
+  }
+  for(i=0; i < 3; i++) {
+    recv_length = recv(sockfd, buffer, 8000, 0);
+    printf("Got a %d byte packet\n", recv_length);
+    dump(buffer, recv_length);
+  }
 }
